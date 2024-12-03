@@ -14,11 +14,10 @@ namespace CharacterCreationSystem
             {
                 pirateDictionary.Add(pirate.CharacterInfo.Name, pirate);
                 pirateList.Add(pirate);
-                Console.WriteLine("\nPirate added to database successfully!\n");
             }
             catch (Exception e)
             {
-                Console.WriteLine("\nError adding to database!" + e.Message);
+                Console.WriteLine("\n:::::Error adding to database!:::::\n" + e.Message);
             }
         }
 
@@ -28,11 +27,10 @@ namespace CharacterCreationSystem
             {
                 pirateDictionary.Remove(pirate.CharacterInfo.Name);
                 pirateList.Remove(pirate);
-                Console.WriteLine("\nPirate removed from database successfully!\n");
             } 
             catch (Exception e)
             {
-                Console.WriteLine("\nError removing from database!" + e.Message);
+                Console.WriteLine("\n:::::Error removing from database!:::::\n" + e.Message);
             }
             
         }
@@ -40,11 +38,18 @@ namespace CharacterCreationSystem
         public static void ViewDatabase()
         {
             int i = 0;
-            Console.WriteLine($"{"Pirate Name", -15}");
-            foreach (KeyValuePair<string, Pirate> pirate in pirateDictionary)
+            Console.WriteLine($"\n{"Pirate Name", -15}");
+
+            if(pirateDictionary.Count > 0)
             {
-                Console.WriteLine($"| {i+1, -2} | {pirate.Key} ");
-                i++;
+                foreach (KeyValuePair<string, Pirate> pirate in pirateDictionary)
+                {
+                    Console.WriteLine($"| {i + 1,-2} | {pirate.Key} ");
+                    i++;
+                }
+            } else
+            {
+                throw new DatabaseEmptyException(":::::The database doensn't contain any entries!:::::");
             }
         } 
 
@@ -55,7 +60,7 @@ namespace CharacterCreationSystem
                 return pirateList[index - 1];
             } else
             {
-                throw new OptionUnavailableException($"{index} not found in the options!");
+                throw new OptionUnavailableException($":::::{index} not found in the options!:::::");
             }   
         }
     }
