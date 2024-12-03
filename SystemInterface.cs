@@ -7,6 +7,7 @@ namespace CharacterCreationSystem
         CharacterInfo CharacterInfo { get; set; }
         CharacterStats CharacterStats { get; set; }
         CharacterTraits CharacterTraits { get; set; }
+        public abstract void SetDefaultStats(int agility, int charisma, int health, int intelligence, int strength);
     }
 
     public interface IAttack
