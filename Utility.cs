@@ -5,6 +5,7 @@ namespace CharacterCreationSystem
 {
     public class Utility
     {
+        // Method to display action and get input
         public static string GetInput(string action)
         {
             Console.Write($"{action}: ");
@@ -19,7 +20,7 @@ namespace CharacterCreationSystem
             } 
             catch (FormatException)
             {
-                throw new FormatException("Input must be a valid number!");
+                throw new FormatException(":::::Input must be a valid number!:::::");
             }   
         }
         // Validation method for string input
@@ -33,9 +34,9 @@ namespace CharacterCreationSystem
             }
             else
             {
-                throw new FormatException("Only alphanumeric characters are allowed in the input!");
+                throw new FormatException(":::::Only alphanumeric characters are allowed in the input!:::::");
             }
-            return text ?? throw new Exception("Empty string!");
+            return text ?? throw new Exception(":::::Empty string!:::::");
         }
 
         // Returns chosen element
@@ -46,7 +47,7 @@ namespace CharacterCreationSystem
                 return element;
             } else
             {
-                throw new OptionUnavailableException($"{index} not found in the options!");
+                throw new OptionUnavailableException($":::::{index} not found in the options!:::::");
             }
         }
 
@@ -118,29 +119,34 @@ namespace CharacterCreationSystem
             Element trigger = ((Element)informationArray[19]);
             Element debuff = ((Element)informationArray[20]);
 
+            Element[] boosterArray = {
+                moonCycle, form, mainWeapon, secondarySkill, natureSkill, additionalSkill, 
+                physicalTrademark, skinTone, hairStyle, facialHair, baseClothing,
+                accessory, pirateOrigin, shipSize, shipType, pet, crew, trigger, debuff
+            };
+
             Pirate? pirate = null;
             try
             {
                 switch (secondarySkill.Name)
                 {
                     case "Necromancy":
-                        pirate = new NecromancyPirate(secondarySkill);
+                        pirate = new NecromancyPirate();
                         break;
                     case "Blood Magic":
-                        pirate = new BloodMagicPirate(secondarySkill);
+                        pirate = new BloodMagicPirate();
                         break;
                     case "Transmutation":
-                        pirate = new TransmutationPirate(secondarySkill);
+                        pirate = new TransmutationPirate();
                         break;
                     case "Alchemy":
-                        pirate = new AlchemyPirate(secondarySkill);
+                        pirate = new AlchemyPirate();
                         break;
                     case "Teleportation":
-                        pirate = new TeleportationPirate(secondarySkill);
+                        pirate = new TeleportationPirate();
                         break;
                     default:
-                        Console.WriteLine("na-def");
-                        break;
+                        throw new Exception();
                 }
                 pirate.CharacterInfo = new CharacterInfo(name, moonCycle, form, pirateCode);
                 pirate.CharacterWeapons.MainWeapon = mainWeapon;
@@ -160,39 +166,83 @@ namespace CharacterCreationSystem
                 pirate.CharacterTraits.Crew = crew;
                 pirate.CharacterTraits.Trigger = trigger;
                 pirate.CharacterTraits.Debuff = debuff;
+
+                foreach(Element element in boosterArray)
+                {
+                    GetBoost(pirate, element);
+                }
             }
             catch (Exception e)
             {
-                throw new Exception("Character Creation Unsuccessful: " + e.Message);
+                throw new Exception(":::::Character Creation Unsuccessful:::::\n" + e.Message);
             }
             return pirate;
+        }
+
+        // Allows user to select a pirate character from the list of pirates
+        public static Pirate GetPirateFromList()
+        {
+            Pirate pirate;
+            Database.ViewDatabase();
+            pirate = Database.GetPirate(Utility.Validate(Utility.GetInput("Enter Pirate Number"), 1));
+            ShowPirate(pirate);
+            return pirate;
+        }
+
+        // Adds element boost value to character's stats
+        public static void GetBoost(Pirate pirate, Element element)
+        {
+            pirate.CharacterStats.Agility += element.AgilityBoost;
+            pirate.CharacterStats.Charisma += element.CharismaBoost;
+            pirate.CharacterStats.Health += element.HealthBoost;
+            pirate.CharacterStats.Intelligence += element.IntelligenceBoost;
+            pirate.CharacterStats.Strength += element.StrengthBoost;
+        }
+
+        // Displays the computed character stats
+        public static void ShowStats(Pirate pirate)
+        {
+            Console.WriteLine("\nCHARACTER STATS\n");
+            Console.WriteLine($"    | Health             | {pirate.CharacterStats.Health}");
+            Console.WriteLine($"    | Strength           | {pirate.CharacterStats.Strength}");
+            Console.WriteLine($"    | Agility            | {pirate.CharacterStats.Agility}");
+            Console.WriteLine($"    | Intelligence       | {pirate.CharacterStats.Intelligence}");
+            Console.WriteLine($"    | Charisma           | {pirate.CharacterStats.Charisma}");
         }
 
         // Displays the information regarding the character
         public static void ShowPirate(Pirate pirate)
         {
-            Console.WriteLine("\nCHARCTER TRAITS\n");
-            Console.WriteLine($"    | Name:               | {pirate.CharacterInfo.Name}");
-            Console.WriteLine($"    | Moon Cycles:        | {pirate.CharacterInfo.MoonCycles.Name}");
-            Console.WriteLine($"    | Form:               | {pirate.CharacterInfo.Form.Name}");
-            Console.WriteLine($"    | Pirate Code:        | {pirate.CharacterInfo.PirateCode.ToString()}");
-            Console.WriteLine($"    | Main Weapon:        | {pirate.CharacterWeapons.MainWeapon.Name}");
-            Console.WriteLine($"    | Secondary Skill:    | {pirate.CharacterWeapons.SecondarySkill.Name}");
-            Console.WriteLine($"    | Nature Skill:       | {pirate.CharacterWeapons.NatureSkill.Name}");
-            Console.WriteLine($"    | Additional Skill:   | {pirate.CharacterWeapons.AdditionalSkill.Name}");
-            Console.WriteLine($"    | Physical Trademark: | {pirate.CharacterTraits.PhysicalTrademark.Name}");
-            Console.WriteLine($"    | Skin Tone:          | {pirate.CharacterTraits.SkinTone.Name}");
-            Console.WriteLine($"    | Hair Style:         | {pirate.CharacterTraits.HairStyle.Name}");
-            Console.WriteLine($"    | Facial Hair:        | {pirate.CharacterTraits.FacialHair.Name}");
-            Console.WriteLine($"    | Base Clothing:      | {pirate.CharacterTraits.BaseClothing.Name}");
-            Console.WriteLine($"    | Accessory:          | {pirate.CharacterTraits.Accessory.Name}");
-            Console.WriteLine($"    | Pirate Origin:      | {pirate.CharacterTraits.PirateOrigin.Name}");
-            Console.WriteLine($"    | Ship Type:          | {pirate.CharacterTraits.ShipType.Name}");
-            Console.WriteLine($"    | Shipe Size:         | {pirate.CharacterTraits.ShipSize.Name}");
-            Console.WriteLine($"    | Pet:                | {pirate.CharacterTraits.Pet.Name}");
-            Console.WriteLine($"    | Crew:               | {pirate.CharacterTraits.Crew.Name}");
-            Console.WriteLine($"    | Trigger:            | {pirate.CharacterTraits.Trigger.Name}");
-            Console.WriteLine($"    | Debuff:             | {pirate.CharacterTraits.Debuff.Name}\n");
+            Console.WriteLine("\nCHARACTER TRAITS\n");
+            Console.WriteLine($"    | Name               | {pirate.CharacterInfo.Name}");
+            Console.WriteLine($"    | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}");
+            Console.WriteLine($"    | Form               | {pirate.CharacterInfo.Form.Name}");
+            Console.WriteLine($"    | Pirate Code        | {pirate.CharacterInfo.PirateCode.ToString()}");
+            Console.WriteLine($"    | Main Weapon        | {pirate.CharacterWeapons.MainWeapon.Name}");
+            Console.WriteLine($"    | Secondary Skill    | {pirate.CharacterWeapons.SecondarySkill.Name}");
+            Console.WriteLine($"    | Nature Skill       | {pirate.CharacterWeapons.NatureSkill.Name}");
+            Console.WriteLine($"    | Additional Skill   | {pirate.CharacterWeapons.AdditionalSkill.Name}");
+            Console.WriteLine($"    | Physical Trademark | {pirate.CharacterTraits.PhysicalTrademark.Name}");
+            Console.WriteLine($"    | Skin Tone          | {pirate.CharacterTraits.SkinTone.Name}");
+            Console.WriteLine($"    | Hair Style         | {pirate.CharacterTraits.HairStyle.Name}");
+            Console.WriteLine($"    | Facial Hair        | {pirate.CharacterTraits.FacialHair.Name}");
+            Console.WriteLine($"    | Base Clothing      | {pirate.CharacterTraits.BaseClothing.Name}");
+            Console.WriteLine($"    | Accessory          | {pirate.CharacterTraits.Accessory.Name}");
+            Console.WriteLine($"    | Pirate Origin      | {pirate.CharacterTraits.PirateOrigin.Name}");
+            Console.WriteLine($"    | Ship Type          | {pirate.CharacterTraits.ShipType.Name}");
+            Console.WriteLine($"    | Shipe Size         | {pirate.CharacterTraits.ShipSize.Name}");
+            Console.WriteLine($"    | Pet                | {pirate.CharacterTraits.Pet.Name}");
+            Console.WriteLine($"    | Crew               | {pirate.CharacterTraits.Crew.Name}");
+            Console.WriteLine($"    | Trigger            | {pirate.CharacterTraits.Trigger.Name}");
+            Console.WriteLine($"    | Debuff             | {pirate.CharacterTraits.Debuff.Name}");
+        }
+
+        // Utility method to pause program flow 
+        public static void EnterToContinue()
+        {
+            Console.Write("\nPress enter to continue... ");
+            Console.ReadLine();
+            Console.WriteLine();
         }
     }
 }
