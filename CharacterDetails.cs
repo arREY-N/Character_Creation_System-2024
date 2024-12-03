@@ -5,19 +5,43 @@ namespace CharacterCreationSystem
     public struct CharacterInfo
     {
         public string Name { get; set; }
-        public string MoonCycles { get; set; }
-        public string Form { get; set; }
+        public Element MoonCycles { get; set; }
+        public Element Form { get; set; }
         public bool PirateCode { get; set; }
-        public string PirateType { get; set; }
 
-        public CharacterInfo(string name, string moonCycles, string form, bool pirateCode, string pirateType)
+        public CharacterInfo(string name, Element moonCycles, Element form, bool pirateCode)
         {
             this.Name = name;
             this.MoonCycles = moonCycles;
             this.Form = form;
             this.PirateCode = pirateCode;
-            this.PirateType = pirateType;
         }
+    }  
+
+    public class CharacterWeapons
+    {
+        public Element MainWeapon { get; set; }
+        public Element SecondarySkill { get; set; }
+        public Element NatureSkill {  get; set; }   
+        public Element AdditionalSkill { get; set; }
+
+    }
+
+    public class CharacterTraits
+    {
+        public Element PhysicalTrademark { get; set; }
+        public Element SkinTone { get; set; }
+        public Element HairStyle { get; set; }
+        public Element FacialHair { get; set; }
+        public Element BaseClothing { get; set; }
+        public Element Accessory { get; set; }
+        public Element PirateOrigin { get; set; }
+        public Element ShipType { get; set; }
+        public Element ShipSize { get; set; }
+        public Element Pet { get; set; }
+        public Element Crew { get; set; }
+        public Element Trigger { get; set; }
+        public Element Debuff { get; set; }
     }
 
     public class CharacterStats
@@ -29,24 +53,25 @@ namespace CharacterCreationSystem
         public int Charisma { get; set; }
     }
 
-    public class CharacterTraits
+    public struct Element
     {
-        public string? PhysicalTrademark { get; set; }
-        public string? SkinTone { get; set; }
-        public string? HairStyle { get; set; }
-        public string? FacialHair { get; set; }
-        public string? MainSkill { get; set; }
-        public string? SecondarySkill { get; set; }
-        public string? NatureSkill { get; set; }
-        public string? AdditionalSkill { get; set; }
-        public string? BaseClothing { get; set; }
-        public string? Accessories { get; set; }
-        public string? PirateOrigin { get; set; }
-        public string? ShipType { get; set; }
-        public string? ShipSize { get; set; }
-        public string? Pet { get; set; }
-        public string? Crew { get; set; }
-        public string? Trigger { get; set; }
-        public string? Debuff { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int HealthBoost { get; set; }
+        public int AgilityBoost { get; set; }
+        public int StrengthBoost { get; set; }
+        public int IntelligenceBoost { get; set; }
+        public int CharismaBoost { get; set; }
+
+        public Element(string name, string description, int charismaBoost, int agilityBoost, int healthBoost, int intelligenceBoost, int strengthBoost)
+        {
+            this.Name = name;
+            this.Description = description;
+            this.HealthBoost = healthBoost;
+            this.AgilityBoost = agilityBoost;
+            this.StrengthBoost = strengthBoost;
+            this.IntelligenceBoost = intelligenceBoost;
+            this.CharismaBoost = charismaBoost;
+        }
     }
 }

@@ -11,10 +11,10 @@ namespace CharacterCreationSystem
 
     public interface IAttack
     {
-        void MainWeapon();
-        void SecondarySkill();
-        void NaturalSkill();
-        void AdditionalSkill();
+        void MainAttack();
+        void SecondAttack();
+        void NatureAttack();
+        void AdditionalAttack();
     }
 
     public interface IDefend
