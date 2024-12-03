@@ -8,4 +8,13 @@ namespace CharacterCreationSystem
         {
         }
     }
+
+    public class DatabaseEmptyException : Exception
+    {
+        public DatabaseEmptyException(String message) : base(message)
+        {
+        }
+    }
+
+    
 }
