@@ -107,7 +107,7 @@ namespace CharacterCreationSystem
                                 pirate = DictionaryDisplay.GetPirateFromList();
                                 CharacterDisplay.ShowStats(pirate);
                                 Utility.EnterToContinue();
-                                Database.RemoveFromDatabase(pirate);
+                                Database.RemoveFromLocalDatabase(pirate);
                                 Console.WriteLine("\n:::::Pirate removed from database successfully!:::::");
                             }
                             catch (DatabaseEmptyException e)

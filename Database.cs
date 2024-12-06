@@ -58,7 +58,7 @@ namespace CharacterCreationSystem
 
                         object[] pirateElements = Character.SetCharacter(dataRow);
                         Pirate pirate = Character.CreateCharacter(pirateElements);
-                        Database.AddToDatabase(pirate);
+                        Database.AddToLocalDatabase(pirate);
                     }
                 }
             }
@@ -75,8 +75,16 @@ namespace CharacterCreationSystem
         // Add character to SQL Database
         public static void AddToSQLDatabase(object[] informationArray)
         {
+            Console.WriteLine("ahere");
+
+            foreach(object information in informationArray)
+            {
+                Console.WriteLine(information.ToString());
+            }
+            Console.ReadLine();
             try
             {
+                Console.WriteLine("bhere");
                 string characterName = Convert.ToString(informationArray[0]);
                 int moonCycle = Convert.ToInt32(informationArray[1]);
                 int form = Convert.ToInt32(informationArray[2]);
@@ -98,7 +106,7 @@ namespace CharacterCreationSystem
                 int crew = Convert.ToInt32(informationArray[18]);
                 int trigger = Convert.ToInt32(informationArray[19]);
                 int debuff = Convert.ToInt32(informationArray[20]);
-
+                Console.ReadLine();
                 string characterTable = "characterInformation";
 
                 con.ConnOpen();
@@ -131,6 +139,8 @@ namespace CharacterCreationSystem
                     cmd.Parameters.AddWithValue("@trigger", trigger);
                     cmd.Parameters.AddWithValue("@debuff", debuff);
 
+                    Console.WriteLine("whahah");
+
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -150,7 +160,7 @@ namespace CharacterCreationSystem
         public static Dictionary<string, Pirate> pirateDictionary { get; set; } = [];
         public static List<Pirate> pirateList { get; set; } = [];    
 
-        public static void AddToDatabase(Pirate pirate)
+        public static void AddToLocalDatabase(Pirate pirate)
         {
             try
             {
@@ -163,7 +173,7 @@ namespace CharacterCreationSystem
             }
         }
 
-        public static void RemoveFromDatabase(Pirate pirate)
+        public static void RemoveFromLocalDatabase(Pirate pirate)
         {
             try
             {
