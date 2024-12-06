@@ -134,8 +134,7 @@ namespace CharacterCreationSystem
                             pirate = CreateCharacter(informationArray);
                             
                             Database.AddToLocalDatabase(pirate);
-                            // Console.WriteLine("adding to sql");
-                            // SQLConnection.AddToSQLDatabase(dbInformationArray);
+                            SQLConnection.AddToSQLDatabase(dbInformationArray);
                             Console.WriteLine("\n:::::Character Creation Successful!:::::");
                             CharacterDisplay.ShowPirate(pirate);
                             CharacterDisplay.ShowStats(pirate);

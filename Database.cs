@@ -75,16 +75,8 @@ namespace CharacterCreationSystem
         // Add character to SQL Database
         public static void AddToSQLDatabase(object[] informationArray)
         {
-            Console.WriteLine("ahere");
-
-            foreach(object information in informationArray)
-            {
-                Console.WriteLine(information.ToString());
-            }
-            Console.ReadLine();
             try
             {
-                Console.WriteLine("bhere");
                 string characterName = Convert.ToString(informationArray[0]);
                 int moonCycle = Convert.ToInt32(informationArray[1]);
                 int form = Convert.ToInt32(informationArray[2]);
@@ -106,14 +98,9 @@ namespace CharacterCreationSystem
                 int crew = Convert.ToInt32(informationArray[18]);
                 int trigger = Convert.ToInt32(informationArray[19]);
                 int debuff = Convert.ToInt32(informationArray[20]);
-                Console.ReadLine();
-                string characterTable = "characterInformation";
 
                 con.ConnOpen();
-                string sql = $"INSERT INTO {characterTable} (characterName, moonCycle, form, pirateCode, mainWeapon, secondarySkill, natureSkill, additionalSkill, physicalTrademark, " +
-                    $"skinTone, hairStyle, facialHair, baseClothing, accessory, pirateOrigin, shipType, shipSize, pet, crew, trigger, debuff) " +
-                    $"VALUES (@characterName, @moonCycle, @form, @pirateCode, @mainWeapon, @secondarySkill, @natureSkill, @additionalSkill, @physicalTrademark, @skinTone, " +
-                    $"@hairStyle, @facialHair, @baseClothing, @accessory, @pirateOrigin, @shipType, @shipSize, @pet, @crew, @trigger, @debuff)";
+                string sql = "INSERT INTO characterInformation VALUES (@characterName, @moonCycle, @form, @pirateCode, @mainWeapon, @secondarySkill, @natureSkill, @additionalSkill, @physicalTrademark, @skinTone, @hairStyle, @facialHair, @baseClothing, @accessory, @pirateOrigin, @shipType, @shipSize, @pet, @crew, @trigger, @debuff)";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, con.GetConnection()))
                 {
@@ -138,10 +125,6 @@ namespace CharacterCreationSystem
                     cmd.Parameters.AddWithValue("@crew", crew);
                     cmd.Parameters.AddWithValue("@trigger", trigger);
                     cmd.Parameters.AddWithValue("@debuff", debuff);
-
-                    Console.WriteLine("whahah");
-
-                    cmd.ExecuteNonQuery();
                 }
             }
             catch (Exception e)
