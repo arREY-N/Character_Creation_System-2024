@@ -21,9 +21,9 @@ namespace CharacterCreationSystem
                 Dictionaries.CharacterTraitTitles.GetLength(0)
             ];
 
-            Console.WriteLine("\n>>>>> CREATE YOUR PIRATE <<<<<\n");
-
             int infoIndex = 0;
+
+            Utility.DisplayHeader("SET CHARACTER");
 
             foreach (object[,] infoArray in Dictionaries.dictionaries)
             {
@@ -44,12 +44,12 @@ namespace CharacterCreationSystem
                             }
                             else
                             {
-                                informationArray[infoIndex] = Utility.Validate(Console.ReadLine() ?? String.Empty, ' ');
+                                informationArray[infoIndex] = Utility.ValidateName(Utility.Validate(Console.ReadLine() ?? String.Empty, ' '));
                                 dbInformationArray[infoIndex] = informationArray[infoIndex];
                                 break;
                             }
                         }
-                        catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
+                        catch (Exception e) when (e is FormatException || e is OptionUnavailableException || e is NameUnavailableException  || e is ArgumentException)
                         {
                             Console.WriteLine($"\n{e.Message}\n");
                             Console.Write($"{Convert.ToString(infoArray[i, 0])}: ");
@@ -119,9 +119,7 @@ namespace CharacterCreationSystem
             while (edit)
             {
                 CharacterDisplay.DisplayChoices(Dictionaries.dictionaries, informationArray);
-
-                Console.WriteLine("\nSave character details?");
-                Console.WriteLine("| 1  | Save");
+                Console.WriteLine("\n| 1  | Save");
                 Console.WriteLine("| 2  | Edit");
                 Console.WriteLine("| 3  | Main Menu");
 
@@ -132,30 +130,30 @@ namespace CharacterCreationSystem
                     {
                         case 1:
                             pirate = CreateCharacter(informationArray);
-                            
                             Database.AddToLocalDatabase(pirate);
                             SQLConnection.AddToSQLDatabase(dbInformationArray);
-                            Console.WriteLine("\n:::::Character Creation Successful!:::::");
+                            Utility.DisplayHeader("CHARACTER SUCCESSFULLY CREATED");
                             CharacterDisplay.ShowPirate(pirate);
                             CharacterDisplay.ShowStats(pirate);
                             Utility.EnterToContinue();
                             edit = false;
                             break;
                         case 2:
-                            Console.WriteLine("\n >>>>> EDITING CHARACTER! <<<<<\n");
+                            Utility.DisplayHeader("EDITING CHARACTER");
                             pirate = CreateCharacter(EditChoice(dataPackage));
                             break;
                         case 3:
                             Console.Clear();
+                            Utility.Loading();
                             edit = false;
                             break;
                         default:
-                            throw new OptionUnavailableException($":::::{VAction} is not in the options!:::::");
+                            throw new OptionUnavailableException($"{VAction} is not in the options!");
                     }
                 }
                 catch (OptionUnavailableException e)
                 {
-                    Console.WriteLine($"\n{e.Message}\n");
+                    Utility.DisplayErrorMessage(e.Message);
                 }
             }
         }
@@ -177,9 +175,19 @@ namespace CharacterCreationSystem
                     Console.WriteLine();
                     if (VAction == 1)
                     {
-                        string newChoice = Utility.Validate(Utility.GetInput("Enter New Trait"), ' ');
-                        informationArray[VAction - 1] = newChoice;
-                        dbinformationArray[VAction - 1] = newChoice;
+                        while (true)
+                        {
+                            try
+                            {
+                                string newChoice = Utility.ValidateName(Utility.Validate(Utility.GetInput("\nEnter New Trait"), ' '));
+                                informationArray[VAction - 1] = newChoice;
+                                dbinformationArray[VAction - 1] = newChoice;
+                                break;
+                            } catch (Exception e) when (e is ArgumentException || e is NameUnavailableException)
+                            {
+                                Console.WriteLine($"\n{e.Message}\n");
+                            }
+                        }
                     }
                     else if (VAction > 1 && VAction < properties.Length + 2)
                     {
@@ -194,7 +202,7 @@ namespace CharacterCreationSystem
                     }
                     else
                     {
-                        throw new OptionUnavailableException($":::::{VAction} is not in the options!:::::");
+                        throw new OptionUnavailableException($"{VAction} is not in the options!");
                     }
 
                     break;
@@ -288,7 +296,7 @@ namespace CharacterCreationSystem
             }
             catch (Exception e)
             {
-                throw new Exception(":::::Character Creation Unsuccessful:::::\n" + e.Message);
+                throw new Exception("Character Creation Unsuccessful");
             }
             return pirate;
         }

@@ -125,6 +125,34 @@ namespace CharacterCreationSystem
                     cmd.Parameters.AddWithValue("@crew", crew);
                     cmd.Parameters.AddWithValue("@trigger", trigger);
                     cmd.Parameters.AddWithValue("@debuff", debuff);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                con.ConnClose();
+            }
+            finally
+            {
+                con.ConnClose();
+            }
+        }
+        // Remove character from SQL
+        public static void RemoveFromSQLDatabase(Pirate pirate)
+        {
+            try
+            {
+                string characterName = pirate.CharacterInfo.Name;
+
+                con.ConnOpen();
+                string sql = "DELETE FROM characterInformation WHERE characterName = @characterName";
+
+                using (MySqlCommand cmd = new MySqlCommand(sql, con.GetConnection()))
+                {
+                    cmd.Parameters.AddWithValue("@characterName", characterName);
+                    cmd.ExecuteNonQuery();
                 }
             }
             catch (Exception e)
@@ -152,7 +180,7 @@ namespace CharacterCreationSystem
             }
             catch (Exception e)
             {
-                Console.WriteLine("\n:::::Error adding to database!:::::\n" + e.Message);
+                Utility.DisplayErrorMessage(e.Message);
             }
         }
 
@@ -165,7 +193,7 @@ namespace CharacterCreationSystem
             } 
             catch (Exception e)
             {
-                Console.WriteLine("\n:::::Error removing from database!:::::\n" + e.Message);
+                Utility.DisplayErrorMessage(e.Message);
             }
             
         }
@@ -173,7 +201,6 @@ namespace CharacterCreationSystem
         public static void ViewDatabase()
         {
             int i = 0;
-            Console.WriteLine($"\n{"Pirate Name", -15}");
 
             if(pirateDictionary.Count > 0)
             {
@@ -184,7 +211,7 @@ namespace CharacterCreationSystem
                 }
             } else
             {
-                throw new DatabaseEmptyException(":::::The database doensn't contain any entries!:::::");
+                throw new DatabaseEmptyException("The database doensn't contain any entries!");
             }
         } 
 
@@ -195,7 +222,7 @@ namespace CharacterCreationSystem
                 return pirateList[index - 1];
             } else
             {
-                throw new OptionUnavailableException($":::::{index} not found in the options!:::::");
+                throw new OptionUnavailableException($"{index} not found in the options!");
             }   
         }
     }

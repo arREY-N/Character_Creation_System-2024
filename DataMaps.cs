@@ -5,18 +5,38 @@ namespace CharacterCreationSystem
 {
     public class GameInfo
     {
-        public string[] gameStory = new string[]
+        public static string[] gameStory = new string[]
         {
-            "1st paragraph",
-            "2nd paragraph",
-            "3rd pagrangraph"
+            "   In the treacherous waters of the Sea of Forgotten Legends where myths and curses collide, a new breed of pirates has emerged to claim the legacy of the fallen titans: " +
+            "Morgan Soulweaver, Darius Bloodbance, Selene Shapetide, Balthazar Goldflask, and Nysaa Riftwalker. These legendary figures once ruled the seas with unmatched power, " +
+            "their names etched into the annals of history. But ambition was their downfall. The remnants of their crews and their legendary ships are now the stuff of legend, " +
+            "scattered across the seas. Yet, their unfinished quests and the cursed treasures they sought still lie waiting, tempting new pirates to take up their mantle. ",
+
+            "   For some, it's about revenge against old enemies; for others, it's about the promise of unimaginable power or ancient knowledge. " +
+            "In this world, new pirates will rise, their fates tied to those of their predecessors as they strive either to finish what was left undone—or to surpass their masters entirely. " +
+            "With a play of power and curses, players set sail in this enormous, and unforgiving seas. They have to manage their resources, build their ships, and live in these dangers. " +
+            "The sea is dangerous by itself, as stormy winds, other rival pirate groups, and other sea-beast monsters in its dark deep threaten survival.",
+            
+            "   In a game filled with crests and troughs, players have to decide whether to push forward with the ever-mounting cost or find a way to break the curse. " +
+            "The ultimate victory means total power. It could come at the cost of lives—or even souls. Alliances and rival factions are constantly changing. Unravel the mystery and join in the race. " +
+            "Yet, in the end, it all comes down to this final question: will the captain succumb to the curse of the pirate or become the greatest pirate of all? "
         };
 
-        public string[,] credits = new string[,]
+        public static string[,] credits = new string[,]
         {
-            {"Reyn Penus", "Programmer, Leader", " " },
-            {"Hannah Diamos", "Documentation", " " },
-            {"Kyle Alegria", "Documentation", " " }
+            {
+                "Reyn Penus", 
+                "   Programmer, Leader", 
+                "   As the leader, Reyn manages the division of labor and the supervision of his team. In addition, he also handles the creation of the program as well as its database." 
+            },
+            {
+                "Hannah Diamos", 
+                "  Software Documenter (Documentation)", 
+                "  Hannah works as the software documenter. With this title, she's tasked to handle the flowchart of the program. She also worked in writing the explanation of each OOP concept implemented." },
+            {
+                "Kael Alegria", 
+                "  Content Developer (Documentation)", 
+                "  Kael works as the content creator of the team. He is tasked to create the story and other game elements included in the program. He also worked in the explanation of each OOP concept implemented." }
         }; 
     }
     public class Dictionaries
@@ -250,7 +270,7 @@ namespace CharacterCreationSystem
             } 
             catch (Exception e)
             {
-                Console.WriteLine("Error in Data Maps Creation! " + e.Message);
+                Utility.DisplayErrorMessage(e.Message);
             }
         }	
 	}

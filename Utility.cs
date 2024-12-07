@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using static System.Collections.Specialized.BitVector32;
@@ -23,7 +24,7 @@ namespace CharacterCreationSystem
             } 
             catch (Exception e) when (e is FormatException || e is OverflowException)
             {
-                throw new FormatException(":::::Input must be a valid integer number!:::::");
+                throw new FormatException("Input must be a valid integer number!");
             }   
         }
         // Validation method for string input
@@ -37,20 +38,84 @@ namespace CharacterCreationSystem
             }
             else
             {
-                throw new FormatException(":::::Only alphanumeric characters are allowed in the input!:::::");
+                throw new FormatException("Only alphanumeric characters are allowed in the input!");
             }
-            return text ?? throw new Exception(":::::Empty string!:::::");
+            return text ?? throw new Exception("Empty string!");
+        }
+
+        public static string ValidateName(string input)
+        {
+            string? name;
+
+            if (Database.pirateDictionary.ContainsKey(input))
+            {
+                throw new NameUnavailableException("Name already found in the system, use another one!");
+            } else if (input.Length < 4)
+            {
+                throw new ArgumentException("Name must be more than 4 characters long!");
+            } 
+
+            return input;
         }
         // Program buffer
         public static void EnterToContinue()
         {
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.WriteLine(new string(' ', Console.WindowWidth));
-            Console.Write("\nPress enter to continue... ");
+            DisplayCenter("Press ENTER to continue...");
             Console.ReadKey();
             Console.Clear();
+            Loading();
         }
-        
+
+        public static void Loading()
+        {
+            DisplayHeader("LOADING");
+            Thread.Sleep(1000);
+            Console.Clear();
+        }
+        // Displaying formatted error message
+        public static void DisplayErrorMessage(string message)
+        {
+            Console.Clear();
+            DisplayHeader(message);
+            EnterToContinue();
+        }
+
+        public static void DisplayCenter(string text)
+        {
+            int LRmargin = (Console.WindowWidth - text.Length) / 2;
+            int Wcenter = Console.WindowWidth / 2;
+            string margin = new string(' ', LRmargin);
+            string center = new string(' ', Wcenter);
+
+            Console.Write($"\n{margin}{text}{margin}\n");
+        }
+
+        public static void DisplayHeader(string section)
+        {
+            Console.Clear();
+            DisplayCenter("SeaPAG: A Sea Pirate Adventure Game");
+            DisplayCenter("\u00A9 2024\n");
+            Console.WriteLine(new string('=', Console.WindowWidth));
+            DisplayCenter(section);
+            Console.WriteLine();
+            Console.WriteLine(new string('=', Console.WindowWidth));
+            Console.WriteLine();
+        }
+
+        public static bool Confirm(int confirm)
+        {
+            switch (confirm)
+            {
+                case 1:
+                    return true;
+                    break;
+                case 2:
+                    return false;
+                    break;
+                default:
+                    throw new OptionUnavailableException($"{confirm} is not in the option");
+            }
+        }
     }
 
     // Class containing methods to access game information from dictionaries
@@ -94,15 +159,17 @@ namespace CharacterCreationSystem
             }
             else
             {
-                throw new OptionUnavailableException($":::::{index} not found in the options!:::::");
+                throw new OptionUnavailableException($"{index} not found in the options!");
             }
         }
         // Allows user to select a pirate character from the list of pirates
         public static Pirate GetPirateFromList()
         {
             Pirate pirate;
+            Utility.DisplayHeader($"PIRATE LIST");
             Database.ViewDatabase();
             pirate = Database.GetPirate(Utility.Validate(Utility.GetInput("Enter Pirate Number"), 1));
+            Utility.DisplayHeader($"ACCESSING '{pirate.CharacterInfo.Name}'");
             CharacterDisplay.ShowPirate(pirate);
             return pirate;
         }
@@ -114,7 +181,7 @@ namespace CharacterCreationSystem
         // Displays the chosen traits of the user
         public static void DisplayChoices(object[] dictionaries, object[] informationArray)
         {
-            Console.WriteLine("Character Traits");
+            Utility.DisplayHeader("CONFIRM CHOICES");
             int element = 0;
             foreach (object[,] infoArray in dictionaries)
             {
@@ -130,36 +197,33 @@ namespace CharacterCreationSystem
         // Displays the computed character stats
         public static void ShowStats(Pirate pirate)
         {
-            Console.WriteLine("\nCHARACTER STATS\n");
-            Console.WriteLine($"    | Health             | {pirate.CharacterStats.Health}");
-            Console.WriteLine($"    | Strength           | {pirate.CharacterStats.Strength}");
-            Console.WriteLine($"    | Agility            | {pirate.CharacterStats.Agility}");
-            Console.WriteLine($"    | Intelligence       | {pirate.CharacterStats.Intelligence}");
-            Console.WriteLine($"    | Charisma           | {pirate.CharacterStats.Charisma}\n");
+            Console.WriteLine($"\n S  | Health             | {pirate.CharacterStats.Health}");
+            Console.WriteLine($" T  | Strength           | {pirate.CharacterStats.Strength}");
+            Console.WriteLine($" A  | Agility            | {pirate.CharacterStats.Agility}");
+            Console.WriteLine($" T  | Intelligence       | {pirate.CharacterStats.Intelligence}");
+            Console.WriteLine($" S  | Charisma           | {pirate.CharacterStats.Charisma}\n");
         }
 
         // Displays the information regarding the character
         public static void ShowPirate(Pirate pirate)
         {
-            Console.Clear();
-            Console.WriteLine("\nCHARACTER TRAITS\n");
-            Console.WriteLine($"    | Name               | {pirate.CharacterInfo.Name}");
-            Console.WriteLine($"    | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}");
-            Console.WriteLine($"    | Form               | {pirate.CharacterInfo.Form.Name}");
-            Console.WriteLine($"    | Pirate Code        | {pirate.CharacterInfo.PirateCode.ToString()}");
-            Console.WriteLine($"    | Main Weapon        | {pirate.CharacterWeapons.MainWeapon.Name}");
-            Console.WriteLine($"    | Secondary Skill    | {pirate.CharacterWeapons.SecondarySkill.Name}");
-            Console.WriteLine($"    | Nature Skill       | {pirate.CharacterWeapons.NatureSkill.Name}");
-            Console.WriteLine($"    | Additional Skill   | {pirate.CharacterWeapons.AdditionalSkill.Name}");
-            Console.WriteLine($"    | Physical Trademark | {pirate.CharacterTraits.PhysicalTrademark.Name}");
+            Console.WriteLine($" C  | Name               | {pirate.CharacterInfo.Name}");
+            Console.WriteLine($" H  | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}");
+            Console.WriteLine($" A  | Form               | {pirate.CharacterInfo.Form.Name}");
+            Console.WriteLine($" R  | Pirate Code        | {pirate.CharacterInfo.PirateCode.ToString()}");
+            Console.WriteLine($" A  | Main Weapon        | {pirate.CharacterWeapons.MainWeapon.Name}");
+            Console.WriteLine($" C  | Secondary Skill    | {pirate.CharacterWeapons.SecondarySkill.Name}");
+            Console.WriteLine($" T  | Nature Skill       | {pirate.CharacterWeapons.NatureSkill.Name}");
+            Console.WriteLine($" E  | Additional Skill   | {pirate.CharacterWeapons.AdditionalSkill.Name}");
+            Console.WriteLine($" R  | Physical Trademark | {pirate.CharacterTraits.PhysicalTrademark.Name}");
             Console.WriteLine($"    | Skin Tone          | {pirate.CharacterTraits.SkinTone.Name}");
-            Console.WriteLine($"    | Hair Style         | {pirate.CharacterTraits.HairStyle.Name}");
-            Console.WriteLine($"    | Facial Hair        | {pirate.CharacterTraits.FacialHair.Name}");
-            Console.WriteLine($"    | Base Clothing      | {pirate.CharacterTraits.BaseClothing.Name}");
-            Console.WriteLine($"    | Accessory          | {pirate.CharacterTraits.Accessory.Name}");
-            Console.WriteLine($"    | Pirate Origin      | {pirate.CharacterTraits.PirateOrigin.Name}");
-            Console.WriteLine($"    | Ship Type          | {pirate.CharacterTraits.ShipType.Name}");
-            Console.WriteLine($"    | Shipe Size         | {pirate.CharacterTraits.ShipSize.Name}");
+            Console.WriteLine($" T  | Hair Style         | {pirate.CharacterTraits.HairStyle.Name}");
+            Console.WriteLine($" R  | Facial Hair        | {pirate.CharacterTraits.FacialHair.Name}");
+            Console.WriteLine($" A  | Base Clothing      | {pirate.CharacterTraits.BaseClothing.Name}");
+            Console.WriteLine($" I  | Accessory          | {pirate.CharacterTraits.Accessory.Name}");
+            Console.WriteLine($" T  | Pirate Origin      | {pirate.CharacterTraits.PirateOrigin.Name}");
+            Console.WriteLine($" S  | Ship Type          | {pirate.CharacterTraits.ShipType.Name}");
+            Console.WriteLine($"    | Ship Size          | {pirate.CharacterTraits.ShipSize.Name}");
             Console.WriteLine($"    | Pet                | {pirate.CharacterTraits.Pet.Name}");
             Console.WriteLine($"    | Crew               | {pirate.CharacterTraits.Crew.Name}");
             Console.WriteLine($"    | Trigger            | {pirate.CharacterTraits.Trigger.Name}");
