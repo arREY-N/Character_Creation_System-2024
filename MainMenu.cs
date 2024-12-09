@@ -7,8 +7,9 @@ namespace CharacterCreationSystem
     public class Menus
     {
         public static void Main(string[] args)
-        {
+        {   
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            
             try
             {
                 Utility.DisplayHeader("GAME LOADING");
@@ -29,6 +30,7 @@ namespace CharacterCreationSystem
             {
                 Utility.DisplayErrorMessage(e.Message);
             }
+            
         }
         public static void MainMenu()
         {
@@ -51,7 +53,6 @@ namespace CharacterCreationSystem
                     switch (VAction)
                     {
                         case 1:
-                            
                             NewGame();
                             break;
                         case 2:
@@ -66,12 +67,11 @@ namespace CharacterCreationSystem
                         case 5:
                             if (Exit() == true)
                             {
-                                Utility.DisplayHeader("See ya later!");
+                                Utility.DisplayHeader("Sea ya later!");
                                 Environment.Exit(0);
                             }
                             else
                             {
-                                Console.Clear();
                                 Utility.Loading();
                             }
                             break;
@@ -85,8 +85,6 @@ namespace CharacterCreationSystem
                 }
             }
         }
-
-        
 
         public static void NewGame()
         {
@@ -111,49 +109,71 @@ namespace CharacterCreationSystem
                 try
                 {
                     VAction = Utility.Validate(Utility.GetInput("Action"), 1);
-
+                    Utility.Loading();
                     switch (VAction)
                     {
                         case 1:
-                            try
+                            while (true)
                             {
-                                Utility.DisplayHeader("VIEW CHARACTERS");
-                                pirate = DictionaryDisplay.GetPirateFromList();
-                                CharacterDisplay.ShowStats(pirate);
-                                Utility.EnterToContinue();
+                                try
+                                {
+                                    pirate = CharacterDisplay.GetPirateFromList();
+                                    Utility.DisplayHeader("VIEW CHARACTER");
+                                    CharacterDisplay.ShowPirate(pirate);
+                                    CharacterDisplay.ShowStats(pirate);
+                                    Utility.EnterToContinue();
+                                }
+                                catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
+                                {
+                                    Utility.DisplayErrorMessage(e.Message);
+                                }
+                                catch (BackTrackingException)
+                                {
+                                    Utility.Loading();
+                                    break;
+                                }
                             }
-                            catch (DatabaseEmptyException e)
-                            {
-                                Utility.DisplayErrorMessage(e.Message);
-                            }
-
                             break;
                         case 2:
-                            try
+                            while (true)
                             {
-                                pirate = DictionaryDisplay.GetPirateFromList();
-                                CharacterDisplay.ShowStats(pirate);
-                                Database.RemoveFromLocalDatabase(pirate);
-                                SQLConnection.RemoveFromSQLDatabase(pirate);
-                                Utility.DisplayHeader("Pirate removed from database successfully!");
-                                Utility.EnterToContinue();
-                            }
-                            catch (DatabaseEmptyException e)
-                            {
-                                Utility.DisplayErrorMessage(e.Message);
+                                try
+                                {
+                                    pirate = CharacterDisplay.GetPirateFromList();
+                                    Utility.DisplayHeader("DELETE CHARACTER");
+                                    CharacterDisplay.ShowPirate(pirate);
+                                    CharacterDisplay.ShowStats(pirate);
+                                    Utility.Divider();
+                                    if (Utility.Confirm())
+                                    {
+                                        Utility.Loading();
+                                        Database.RemoveFromLocalDatabase(pirate);
+                                        SQLConnection.RemoveFromSQLDatabase(pirate);
+                                        Utility.DisplayHeader("Pirate removed from database successfully!");
+                                        Utility.EnterToContinue();
+                                    }
+                                    Utility.Loading();
+                                }
+                                catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
+                                {
+                                    Utility.DisplayErrorMessage(e.Message);
+                                }
+                                catch (BackTrackingException)
+                                {
+                                    Utility.Loading();
+                                    break;
+                                }
                             }
                             break;
                         case 3:
                             Console.Clear();
-                            Utility.Loading();
-                            
                             load = false;
                             break;
                         default:
                             throw new OptionUnavailableException($"{VAction} is not in the options!");
                     }
                 }
-                catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
+                catch (Exception e) when (e is DatabaseEmptyException || e is FormatException || e is OptionUnavailableException)
                 {
                     Utility.DisplayErrorMessage(e.Message);
                 }
@@ -200,24 +220,8 @@ namespace CharacterCreationSystem
 
         public static bool Exit()
         {
-            while (true)
-            {
-                try
-                {
-                    Utility.DisplayHeader("EXIT GAME");
-                    Console.WriteLine("| 1  | Confirm Exit");
-                    Console.WriteLine("| 2  | Stay in the program");
-
-                    int VAction = Utility.Validate(Utility.GetInput("Action"), 1);
-
-                    return Utility.Confirm(VAction);
-                }
-                catch (Exception e) when (e is OptionUnavailableException || e is FormatException)
-                {
-                    Utility.DisplayErrorMessage(e.Message);
-                }
-            }
-            
+            Utility.DisplayHeader("EXIT GAME");
+            return Utility.Confirm();
         }
     }
 }
