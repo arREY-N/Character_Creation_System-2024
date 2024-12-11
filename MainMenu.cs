@@ -12,26 +12,22 @@ namespace CharacterCreationSystem
             
             try
             {
-                Utility.DisplayHeader("GAME LOADING");
+                Utility.DisplayHeader("WELCOME TO SEAPAG!");
 
-                Thread thread1 = new Thread(() => Dictionaries.CreateDataMaps());
-                Thread thread2 = new Thread(() => SQLConnection.AddToLocalDatabase());
+                Thread thread1 = new Thread(() => Database.LoadData());
+                Thread thread2 = new Thread(() => MainMenu());
 
                 thread1.Start();
                 thread2.Start();
 
                 thread1.Join();
                 thread2.Join();
-
-                Thread.Sleep(10);
-                MainMenu();
             } 
             catch (Exception e)
             {
                 Utility.DisplayErrorMessage(e.Message);
             }
-            
-        }
+        }   
         public static void MainMenu()
         {
             Console.Clear();
@@ -49,37 +45,52 @@ namespace CharacterCreationSystem
                 try
                 {
                     VAction = Utility.Validate(Utility.GetInput("Action"), 1);
-                    Utility.Loading();
-                    switch (VAction)
+                    if (Database.Loaded)
                     {
-                        case 1:
-                            NewGame();
-                            break;
-                        case 2:
-                            LoadGame();
-                            break;
-                        case 3:
-                            CampaignMode();
-                            break;
-                        case 4:
-                            Credits();
-                            break;
-                        case 5:
-                            if (Exit() == true)
-                            {
-                                Utility.DisplayHeader("Sea ya later!");
-                                Environment.Exit(0);
-                            }
-                            else
-                            {
-                                Utility.Loading();
-                            }
-                            break;
-                        default:
-                            throw new OptionUnavailableException($"{VAction} is not in the options!");
+                        switch (VAction)
+                        {
+                            case 1:
+                                NewGame();
+                                break;
+                            case 2:
+                                LoadGame();
+                                break;
+                            case 3:
+                                CampaignMode();
+                                break;
+                            case 4:
+                                Credits();
+                                break;
+                            case 5:
+                                Exit();
+                                break;
+                            default:
+                                throw new OptionUnavailableException($"{VAction} is not in the options!");
+                        }
+                    } 
+                    else
+                    {
+                        switch (VAction)
+                        {
+                            case 1:
+                                throw new DatabaseEmptyException("Database not yet completely loaded.");
+                            case 2:
+                                throw new DatabaseEmptyException("Database not yet completely loaded.");
+                            case 3:
+                                CampaignMode();
+                                break;
+                            case 4:
+                                Credits();
+                                break;
+                            case 5:
+                                Exit();
+                                break;
+                            default:
+                                throw new OptionUnavailableException($"{VAction} is not in the options!");
+                        }
                     }
                 }
-                catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
+                catch (Exception e) when (e is FormatException || e is OptionUnavailableException || e is DatabaseEmptyException)
                 {
                     Utility.DisplayErrorMessage(e.Message);
                 }
@@ -109,7 +120,6 @@ namespace CharacterCreationSystem
                 try
                 {
                     VAction = Utility.Validate(Utility.GetInput("Action"), 1);
-                    Utility.Loading();
                     switch (VAction)
                     {
                         case 1:
@@ -129,7 +139,6 @@ namespace CharacterCreationSystem
                                 }
                                 catch (BackTrackingException)
                                 {
-                                    Utility.Loading();
                                     break;
                                 }
                             }
@@ -143,16 +152,14 @@ namespace CharacterCreationSystem
                                     Utility.DisplayHeader("DELETE CHARACTER");
                                     CharacterDisplay.ShowPirate(pirate);
                                     CharacterDisplay.ShowStats(pirate);
-                                    Utility.Divider();
                                     if (Utility.Confirm())
                                     {
-                                        Utility.Loading();
                                         Database.RemoveFromLocalDatabase(pirate);
                                         SQLConnection.RemoveFromSQLDatabase(pirate);
                                         Utility.DisplayHeader("Pirate removed from database successfully!");
-                                        Utility.EnterToContinue();
+                                        Utility.EnterToContinue();   
                                     }
-                                    Utility.Loading();
+                                    break;
                                 }
                                 catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
                                 {
@@ -160,7 +167,6 @@ namespace CharacterCreationSystem
                                 }
                                 catch (BackTrackingException)
                                 {
-                                    Utility.Loading();
                                     break;
                                 }
                             }
@@ -185,15 +191,14 @@ namespace CharacterCreationSystem
             Utility.DisplayHeader("CAMPAIGN MODE");
             foreach (string paragraph in GameInfo.gameStory)
             {
-                
                 char[] charParagraph = paragraph.ToCharArray();
                 foreach(char characters in charParagraph)
                 {
                     Console.Write(characters);
                     Thread.Sleep(10);
                 }
-                Console.WriteLine("\n");
             }
+            Utility.Divider();
             Utility.EnterToContinue();
         }
 
@@ -206,22 +211,27 @@ namespace CharacterCreationSystem
                 {
                     string person = GameInfo.credits[i, j]; 
                     char[] charParagraph = person.ToCharArray();
-                    Console.WriteLine();
+                    
                     foreach (char character in charParagraph)
                     {
                         Console.Write(character);
                         Thread.Sleep(10); 
                     }
                 }
-                Console.WriteLine();
             }
+            Utility.Divider();
             Utility.EnterToContinue();
         }
 
-        public static bool Exit()
+        public static void Exit()
         {
             Utility.DisplayHeader("EXIT GAME");
-            return Utility.Confirm();
+
+            if (Utility.Confirm())
+            {
+                Utility.DisplayHeader("Sea ya later!");
+                Environment.Exit(0);
+            } 
         }
     }
 }

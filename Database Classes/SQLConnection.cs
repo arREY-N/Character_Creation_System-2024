@@ -105,7 +105,6 @@ namespace CharacterCreationSystem
                                     elementArray[index] = pair.Value;
                                 }
                             }
-                                
                         }
                     }
                     else

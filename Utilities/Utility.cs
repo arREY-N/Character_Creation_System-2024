@@ -57,19 +57,19 @@ namespace CharacterCreationSystem
         // Program buffer
         public static void EnterToContinue()
         {
-            Console.WriteLine();
-            Divider();
             DisplayCenter("Press ENTER to continue...");
             Console.ReadKey();
             Console.Clear();
-            Loading();
+            // LoadingScreen();
         }
         // Loading screen
-        public static void Loading()
+        public static void LoadingScreen()
         {
             Console.Clear();
-            DisplayHeader("LOADING");
-            Thread.Sleep(500);
+            Console.SetCursorPosition(0, (Console.WindowHeight/2));
+            DisplayCenter("HAULING TREASURE ABOARD...");
+            Console.SetCursorPosition((Console.WindowWidth/2), (Console.WindowHeight / 2)+1);            
+            Thread.Sleep(1000);
             Console.Clear();
         }
         // Displaying formatted error message
@@ -78,6 +78,7 @@ namespace CharacterCreationSystem
             Console.Clear();
             DisplayHeader(message);
             EnterToContinue();
+            // LoadingScreen();
         }
         // Center formatting 
         public static void DisplayCenter(string text)
@@ -87,19 +88,21 @@ namespace CharacterCreationSystem
             string margin = new string(' ', LRmargin);
             string center = new string(' ', Wcenter);
 
-            Console.Write($"\n{margin}{text}{margin}\n");
+            Console.Write($"{margin}{text}{margin}");
         }
         // Displays the game name and section title
         public static void DisplayHeader(string section)
         {
+            LoadingScreen();
             Console.Clear();
+            Console.WriteLine();
             DisplayCenter("SeaPAG: A Sea Pirate Adventure Game");
-            DisplayCenter("\u00A9 2024\n");
+            Console.WriteLine();
+            Console.WriteLine();
+            DisplayCenter("\u00A9 2024");
             Divider();
             DisplayCenter(section);
-            Console.WriteLine();
             Divider();
-            Console.WriteLine();
         }
         // Method to confirm action
         public static bool Confirm()
@@ -130,7 +133,10 @@ namespace CharacterCreationSystem
         }
         public static void Divider()
         {
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine(new string('=', Console.WindowWidth));
+            Console.WriteLine();
         }
     }
 }

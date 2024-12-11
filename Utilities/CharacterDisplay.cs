@@ -8,7 +8,6 @@ namespace CharacterCreationSystem
         // Displays the chosen traits of the user
         public static void DisplayChoices(object[] dictionaries, object[] informationArray)
         {
-            
             int element = 0;
             foreach (object[,] infoArray in dictionaries)
             {
@@ -29,12 +28,13 @@ namespace CharacterCreationSystem
             Console.WriteLine($" A  | Agility            | {pirate.CharacterStats.Agility}");
             Console.WriteLine($" T  | Intelligence       | {pirate.CharacterStats.Intelligence}");
             Console.WriteLine($" S  | Charisma           | {pirate.CharacterStats.Charisma}");
+            Utility.Divider();
         }
 
         // Displays the information regarding the character
         public static void ShowPirate(Pirate pirate)
         {
-            Console.WriteLine($"\n C  | Name               | {pirate.CharacterInfo.Name}");
+            Console.WriteLine($" C  | Name               | {pirate.CharacterInfo.Name}");
             Console.WriteLine($" H  | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}");
             Console.WriteLine($" A  | Form               | {pirate.CharacterInfo.Form.Name}");
             Console.WriteLine($" R  | Pirate Code        | {pirate.CharacterInfo.PirateCode}");
@@ -61,7 +61,7 @@ namespace CharacterCreationSystem
         {
             int i = 0;
 
-            if (Database.pirateDictionary.Count > 0)
+            if (Database.pirateDictionary.Count > 0 && i < Database.pirateDictionary.Count)
             {
                 foreach (KeyValuePair<string, Pirate> pirate in Database.pirateDictionary)
                 {
@@ -77,15 +77,16 @@ namespace CharacterCreationSystem
         // Allows user to select a pirate character from the list of pirates
         public static Pirate GetPirateFromList()
         {
-            Utility.DisplayHeader("GET CHARACTER");
+            Utility.DisplayHeader("GET PIRATE");
             Pirate pirate;
             ViewDatabase();
+
+            // Utility.Divider();
 
             String VAction = Utility.GetInput("Enter Pirate Number (Enter 0 to go back to menu)");
             if (VAction != "0")
             {
                 pirate = Database.GetPirate(Utility.Validate(VAction, 1));
-                Utility.Loading();
                 return pirate;
             }
             else

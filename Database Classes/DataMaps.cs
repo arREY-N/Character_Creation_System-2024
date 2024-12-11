@@ -12,12 +12,12 @@ namespace CharacterCreationSystem
             "their names etched into the annals of history. But ambition was their downfall. The remnants of their crews and their legendary ships are now the stuff of legend, " +
             "scattered across the seas. Yet, their unfinished quests and the cursed treasures they sought still lie waiting, tempting new pirates to take up their mantle. ",
 
-            "   For some, it's about revenge against old enemies; for others, it's about the promise of unimaginable power or ancient knowledge. " +
+            "\n\n   For some, it's about revenge against old enemies; for others, it's about the promise of unimaginable power or ancient knowledge. " +
             "In this world, new pirates will rise, their fates tied to those of their predecessors as they strive either to finish what was left undone—or to surpass their masters entirely. " +
             "With a play of power and curses, players set sail in this enormous, and unforgiving seas. They have to manage their resources, build their ships, and live in these dangers. " +
             "The sea is dangerous by itself, as stormy winds, other rival pirate groups, and other sea-beast monsters in its dark deep threaten survival.",
             
-            "   In a game filled with crests and troughs, players have to decide whether to push forward with the ever-mounting cost or find a way to break the curse. " +
+            "\n\n   In a game filled with crests and troughs, players have to decide whether to push forward with the ever-mounting cost or find a way to break the curse. " +
             "The ultimate victory means total power. It could come at the cost of lives—or even souls. Alliances and rival factions are constantly changing. Unravel the mystery and join in the race. " +
             "Yet, in the end, it all comes down to this final question: will the captain succumb to the curse of the pirate or become the greatest pirate of all? "
         };
@@ -26,17 +26,17 @@ namespace CharacterCreationSystem
         {
             {
                 "Reyn Penus", 
-                "  > Programmer, Leader", 
-                "  > As the leader, Reyn manages the division of labor and the supervision of his team. In addition, he also handles the creation of the program as well as its database." 
+                "\n  > Programmer, Leader", 
+                "\n  > As the leader, Reyn manages the division of labor and the supervision of his team. In addition, he also handles the creation of the program as well as its database." 
             },
             {
-                "Hannah Diamos", 
-                "  > Software Documenter (Documentation)", 
-                "  > Hannah works as the software documenter. With this title, she's tasked to handle the flowchart of the program. She also worked in writing the explanation of each OOP concept implemented." },
+                "\n\nHannah Diamos", 
+                "\n  > Software Documenter (Documentation)", 
+                "\n  > Hannah works as the software documenter. With this title, she's tasked to handle the flowchart of the program. She also worked in writing the explanation of each OOP concept implemented." },
             {
-                "Kael Alegria", 
-                "  > Content Developer (Documentation)", 
-                "  > Kael works as the content creator of the team. He is tasked to create the story and other game elements included in the program. He also worked in the explanation of each OOP concept implemented." }
+                "\n\nKael Alegria", 
+                "\n  > Content Developer (Documentation)", 
+                "\n  > Kael works as the content creator of the team. He is tasked to create the story and other game elements included in the program. He also worked in the explanation of each OOP concept implemented." }
         }; 
     }
     public class Dictionaries
@@ -150,8 +150,8 @@ namespace CharacterCreationSystem
             {
                 // character information
                 MoonCycles[1] = new Element("New Moon", "A young new pirate, a beginner sailor filled with potential and thirst to learn more.", 10, 0, 0, 0, 0);
-                MoonCycles[2] = new Element("Waxing Sailor", "A prime pirate, one that has gained enough knowledge to traverse the open seas and dive into the deeper challenges of piracy.", 0, 0, 0, 0, 10);
-                MoonCycles[3] = new Element("Full Tide", "A pirate in their peak era, one that has garnered sufficient experience, radiating immense command and authority over their crew.", 0, 0, 10, 0, 0);
+                MoonCycles[2] = new Element("Waxing Sailor", "A prime pirate, one that has gained enough knowledge to traverse the open seas and dive into the challenges of piracy.", 0, 0, 0, 0, 10);
+                MoonCycles[3] = new Element("Full Tide", "A pirate in their peak era, one that has garnered experience, radiating immense command and authority.", 0, 0, 10, 0, 0);
                 MoonCycles[4] = new Element("Waning Shadow", "A renowned pirate, respected not just by their crew but also by other pirate crews.", 0, 10, 0, 0, 0);
                 MoonCycles[5] = new Element("Eclipsed Wander", "A legendary pirate, tested by all the great waves, having vast knowledge and experience of the seas.", 0, 0, 0, 10, 0);
 
@@ -211,7 +211,7 @@ namespace CharacterCreationSystem
                 FacialHairs[1] = new Element("Beard", "", 0, 0, 0, 0, 0);
                 FacialHairs[2] = new Element("Mustache", "", 0, 0, 0, 0, 0);
                 FacialHairs[3] = new Element("Goatee", "", 0, 0, 0, 0, 0);
-                FacialHairs[4] = new Element("Combined beard & mustache", "", 0, 0, 0, 0, 0);
+                FacialHairs[4] = new Element("Beard & mustache", "", 0, 0, 0, 0, 0);
                 FacialHairs[5] = new Element("No facial hair", "", 0, 0, 0, 0, 0);
 
                 BaseClothings[1] = new Element("Linen", "", 0, 0, 0, 0, 0);

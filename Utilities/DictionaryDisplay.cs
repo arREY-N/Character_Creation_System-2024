@@ -31,7 +31,7 @@ namespace CharacterCreationSystem
         {
             foreach (KeyValuePair<int, Element> Item in dictionary)
             {
-                Console.WriteLine($"| {Item.Key,-2} | {Item.Value.Name,-17} | {Item.Value.Description}");
+                Console.WriteLine($"| {Item.Key,-2} | {Item.Value.Name,-23} | {Item.Value.Description}");
             }
         }
         // Returns chosen element

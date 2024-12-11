@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace CharacterCreationSystem
 { 
     public class Database
@@ -47,6 +46,16 @@ namespace CharacterCreationSystem
             {
                 throw new OptionUnavailableException($"{index} not found in the options!");
             }   
+        }
+        // Boolean value to check if the database has loaded
+        public static bool Loaded = false;
+        // Method to load game data and player's database
+        public static void LoadData()
+        {
+            Dictionaries.CreateDataMaps();
+            SQLConnection.AddToLocalDatabase();
+            Thread.Sleep(1000);
+            Loaded = true;
         }
     }
 }

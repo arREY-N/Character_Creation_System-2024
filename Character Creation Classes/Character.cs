@@ -63,16 +63,14 @@ namespace CharacterCreationSystem
             {
                 Utility.DisplayHeader("CONFIRM CHOICES");
                 CharacterDisplay.DisplayChoices(Dictionaries.dictionaries, informationArray);
-                Console.WriteLine();
                 Utility.Divider();
-                Console.WriteLine("\n| 1  | Save");
+                Console.WriteLine("| 1  | Save");
                 Console.WriteLine("| 2  | Edit");
                 Console.WriteLine("| 3  | Main Menu");
 
                 try
                 {
                     int VAction = Utility.Validate(Utility.GetInput("Action"), 1);
-                    Utility.Loading();
                     switch (VAction)
                     {
                         case 1:
@@ -114,6 +112,7 @@ namespace CharacterCreationSystem
             {
                 try
                 {
+                    Utility.Divider();
                     int VAction = Utility.Validate(Utility.GetInput("Edit Trait"), 1);
                     Console.WriteLine();
                     if (VAction == 1)
