@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using static System.Collections.Specialized.BitVector32;
 
 namespace CharacterCreationSystem
 {
@@ -22,6 +21,7 @@ namespace CharacterCreationSystem
 
                 thread1.Join();
                 thread2.Join();
+                
             } 
             catch (Exception e)
             {
@@ -30,6 +30,7 @@ namespace CharacterCreationSystem
         }   
         public static void MainMenu()
         {
+            Thread.Sleep(3000);
             Console.Clear();
             int VAction = 0;
 
@@ -113,9 +114,10 @@ namespace CharacterCreationSystem
             while (load)
             {
                 Utility.DisplayHeader("LOAD GAME");
-                Console.WriteLine("| 1  | View Characters");
-                Console.WriteLine("| 2  | Delete Character");
-                Console.WriteLine("| 3  | Main Menu");
+                Console.WriteLine("| 1  | View All Characters");
+                Console.WriteLine("| 2  | View Characters");
+                Console.WriteLine("| 3  | Delete Character");
+                Console.WriteLine("| 4  | Main Menu");
 
                 try
                 {
@@ -225,13 +227,17 @@ namespace CharacterCreationSystem
 
         public static void Exit()
         {
-            Utility.DisplayHeader("EXIT GAME");
-
-            if (Utility.Confirm())
+            while (true)
             {
-                Utility.DisplayHeader("Sea ya later!");
-                Environment.Exit(0);
-            } 
+                Utility.DisplayHeader("EXIT GAME");
+
+                if (Utility.Confirm())
+                {
+                    Utility.DisplayHeader("Sea ya later!");
+                    Console.ReadKey();
+                    Environment.Exit(0);
+                } 
+            }
         }
     }
 }

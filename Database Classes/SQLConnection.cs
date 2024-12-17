@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 
 namespace CharacterCreationSystem
 {
+    // Class containing all the methods needed to connect to MySQL
 	public class SQLConnection
     {
         private static MySqlConnection? connMaster;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CharacterCreationSystem
 {
+    // Class containing the contents for the campaign mode and credits
     public class GameInfo
     {
         public static string[] gameStory = new string[]
@@ -39,6 +40,7 @@ namespace CharacterCreationSystem
                 "\n  > Kael works as the content creator of the team. He is tasked to create the story and other game elements included in the program. He also worked in the explanation of each OOP concept implemented." }
         }; 
     }
+    // Class containing the dictionaries where all the game elements are strored
     public class Dictionaries
     {
         // character information
@@ -144,6 +146,7 @@ namespace CharacterCreationSystem
             CharacterWeaponsTitles,
             CharacterTraitTitles
         };       
+        // Method to populate each dictionary
         public static void CreateDataMaps()
         {
             try

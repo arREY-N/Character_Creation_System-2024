@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CharacterCreationSystem
 { 
+    // Class to handle all local database functionalities
     public class Database
     {
         public static Dictionary<string, Pirate> pirateDictionary { get; set; } = [];
@@ -54,7 +55,7 @@ namespace CharacterCreationSystem
         {
             Dictionaries.CreateDataMaps();
             SQLConnection.AddToLocalDatabase();
-            Thread.Sleep(1000);
+            // Thread.Sleep(3000);
             Loaded = true;
         }
     }

@@ -47,9 +47,9 @@ namespace CharacterCreationSystem
             if (Database.pirateDictionary.ContainsKey(input))
             {
                 throw new NameUnavailableException("Name already found in the system, use another one!");
-            } else if (input.Length < 4)
+            } else if (input.Length < 4 || input.Length > 20)
             {
-                throw new ArgumentException("Name must be more than 4 characters long!");
+                throw new ArgumentException("Name must be between 4 characters and 20 characters only!");
             } 
 
             return input;
@@ -60,7 +60,6 @@ namespace CharacterCreationSystem
             DisplayCenter("Press ENTER to continue...");
             Console.ReadKey();
             Console.Clear();
-            // LoadingScreen();
         }
         // Loading screen
         public static void LoadingScreen()
@@ -78,7 +77,6 @@ namespace CharacterCreationSystem
             Console.Clear();
             DisplayHeader(message);
             EnterToContinue();
-            // LoadingScreen();
         }
         // Center formatting 
         public static void DisplayCenter(string text)
@@ -110,26 +108,24 @@ namespace CharacterCreationSystem
             Console.WriteLine("Confirm action");
             Console.WriteLine("| 1  | Proceed");
             Console.WriteLine("| 2  | Cancel");
-            while (true)
+            try
             {
-                try
+                int confirm = Utility.Validate(Utility.GetInput("Action"), 1);
+                switch (confirm)
                 {
-                    int confirm = Utility.Validate(Utility.GetInput("Action"), 1);
-                    switch (confirm)
-                    {
-                        case 1:
-                            return true;
-                        case 2:
-                            return false;
-                        default:
-                            throw new OptionUnavailableException($"{confirm} is not in the option");
-                    }
-                } 
-                catch (Exception e) when (e is OptionUnavailableException || e is FormatException)
-                {
-                    Utility.DisplayErrorMessage(e.Message);
+                    case 1:
+                        return true;
+                    case 2:
+                        return false;
+                    default:
+                        throw new OptionUnavailableException($"{confirm} is not in the option");
                 }
             }
+            catch (Exception e) when (e is OptionUnavailableException || e is FormatException)
+            {
+                Utility.DisplayErrorMessage(e.Message);
+            }
+            return false;
         }
         public static void Divider()
         {

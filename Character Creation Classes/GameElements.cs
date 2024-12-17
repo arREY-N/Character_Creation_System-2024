@@ -2,6 +2,7 @@
 
 namespace CharacterCreationSystem
 {
+    // Structure to save character's information
     public struct CharacterInfo
     {
         public string Name { get; set; }
@@ -17,7 +18,7 @@ namespace CharacterCreationSystem
             this.PirateCode = pirateCode;
         }
     }  
-
+    // Class containing all of the character's weapons
     public class CharacterWeapons
     {
         public Element MainWeapon { get; set; }
@@ -26,7 +27,7 @@ namespace CharacterCreationSystem
         public Element AdditionalSkill { get; set; }
 
     }
-
+    // Class containing all of the character's traits
     public class CharacterTraits
     {
         public Element PhysicalTrademark { get; set; }
@@ -43,7 +44,7 @@ namespace CharacterCreationSystem
         public Element Trigger { get; set; }
         public Element Debuff { get; set; }
     }
-
+    // Class containing all of the character's stats
     public class CharacterStats
     {
         public int Agility { get; set; }
@@ -52,7 +53,7 @@ namespace CharacterCreationSystem
         public int Health { get; set; }
         public int Strength { get; set; }
     }
-
+    // Structure to define each game element
     public struct Element
     {
         public string Name { get; set; }
