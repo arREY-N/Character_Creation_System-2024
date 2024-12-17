@@ -55,7 +55,6 @@ namespace CharacterCreationSystem
         {
             Dictionaries.CreateDataMaps();
             SQLConnection.AddToLocalDatabase();
-            // Thread.Sleep(3000);
             Loaded = true;
         }
     }
