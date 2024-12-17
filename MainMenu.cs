@@ -125,6 +125,34 @@ namespace CharacterCreationSystem
                     switch (VAction)
                     {
                         case 1:
+                            try
+                            {
+                                if (Database.pirateList.Count > 0)
+                                {
+                                    Utility.DisplayHeader("ALL PIRATES");
+                                    for (int i = 0; i < Database.pirateList.Count; i++)
+                                    {
+                                        Utility.DisplayCenter("Loading next pirate");
+                                        pirate = Database.pirateList[i];
+                                        Thread.Sleep(3000);
+                                        Utility.EraseLine();
+                                        Utility.DisplayCenter($"Pirate {i + 1}/{Database.pirateList.Count}: {pirate.CharacterInfo.Name}");
+                                        Utility.Divider('*');
+                                        CharacterDisplay.ShowPirate(pirate);
+                                    }
+                                    Utility.EnterToContinue();
+                                }
+                                else
+                                {
+                                    throw new DatabaseEmptyException("Database contains no pirate entry");
+                                }
+                            } 
+                            catch (DatabaseEmptyException e)
+                            {
+                                Utility.DisplayErrorMessage(e.Message);
+                            }
+                            break;
+                        case 2:
                             while (true)
                             {
                                 try
@@ -132,7 +160,6 @@ namespace CharacterCreationSystem
                                     pirate = CharacterDisplay.GetPirateFromList();
                                     Utility.DisplayHeader("VIEW CHARACTER");
                                     CharacterDisplay.ShowPirate(pirate);
-                                    CharacterDisplay.ShowStats(pirate);
                                     Utility.EnterToContinue();
                                 }
                                 catch (Exception e) when (e is FormatException || e is OptionUnavailableException)
@@ -145,7 +172,7 @@ namespace CharacterCreationSystem
                                 }
                             }
                             break;
-                        case 2:
+                        case 3:
                             while (true)
                             {
                                 try
@@ -153,13 +180,12 @@ namespace CharacterCreationSystem
                                     pirate = CharacterDisplay.GetPirateFromList();
                                     Utility.DisplayHeader("DELETE CHARACTER");
                                     CharacterDisplay.ShowPirate(pirate);
-                                    CharacterDisplay.ShowStats(pirate);
                                     if (Utility.Confirm())
                                     {
                                         Database.RemoveFromLocalDatabase(pirate);
                                         SQLConnection.RemoveFromSQLDatabase(pirate);
                                         Utility.DisplayHeader("Pirate removed from database successfully!");
-                                        Utility.EnterToContinue();   
+                                        Utility.EnterToContinue();
                                     }
                                     break;
                                 }
@@ -173,7 +199,7 @@ namespace CharacterCreationSystem
                                 }
                             }
                             break;
-                        case 3:
+                        case 4:
                             Console.Clear();
                             load = false;
                             break;
@@ -200,7 +226,7 @@ namespace CharacterCreationSystem
                     Thread.Sleep(10);
                 }
             }
-            Utility.Divider();
+            Utility.Divider('=');
             Utility.EnterToContinue();
         }
 
@@ -221,7 +247,7 @@ namespace CharacterCreationSystem
                     }
                 }
             }
-            Utility.Divider();
+            Utility.Divider('=');
             Utility.EnterToContinue();
         }
 
