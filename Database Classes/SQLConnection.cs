@@ -118,37 +118,43 @@ namespace CharacterCreationSystem
             return elementArray;
         }
         // INSERT character to SQL Database
-        public static void AddToSQLDatabase(object[] informationArray)
+        public static void AddToSQLDatabase(Pirate pirate)
         {
             try
             {
-                string? characterName = Convert.ToString(informationArray[0]);
-                string moonCycle = Convert.ToString(((Element)informationArray[1]).Name);
-                string form = Convert.ToString(((Element)informationArray[2]).Name);
-                bool pirateCode = (((Element)informationArray[3]).Name) == "Yes" ? true : false;
-                string mainWeapon = Convert.ToString(((Element)informationArray[4]).Name);
-                string secondarySkill = Convert.ToString(((Element)informationArray[5]).Name);
-                string natureSkill = Convert.ToString(((Element)informationArray[6]).Name);
-                string additionalSkill = Convert.ToString(((Element)informationArray[7]).Name);
-                string physicalTrademark = Convert.ToString(((Element)informationArray[8]).Name);
-                string skinTone = Convert.ToString(((Element)informationArray[9]).Name);
-                string hairStyle = Convert.ToString(((Element)informationArray[10]).Name);
-                string facialHair = Convert.ToString(((Element)informationArray[11]).Name);
-                string baseClothing = Convert.ToString(((Element)informationArray[12]).Name);
-                string accessory = Convert.ToString(((Element)informationArray[13]).Name);
-                string pirateOrigin = Convert.ToString(((Element)informationArray[14]).Name);
-                string shipType = Convert.ToString(((Element)informationArray[15]).Name);
-                string shipSize = Convert.ToString(((Element)informationArray[16]).Name);
-                string pet = Convert.ToString(((Element)informationArray[17]).Name);
-                string crew = Convert.ToString(((Element)informationArray[18]).Name);
-                string trigger = Convert.ToString(((Element)informationArray[19]).Name);
-                string debuff = Convert.ToString(((Element)informationArray[20]).Name);
+                string characterName = pirate.CharacterInfo.Name;
+                string moonCycle = pirate.CharacterInfo.MoonCycles.Name;
+                string form = pirate.CharacterInfo.Form.Name;
+                bool pirateCode = pirate.CharacterInfo.PirateCode;
+                string mainWeapon = pirate.CharacterWeapons.MainWeapon.Name;
+                string secondarySkill = pirate.CharacterWeapons.SecondarySkill.Name;
+                string natureSkill = pirate.CharacterWeapons.NatureSkill.Name;
+                string additionalSkill = pirate.CharacterWeapons.AdditionalSkill.Name;
+                string physicalTrademark = pirate.CharacterTraits.PhysicalTrademark.Name;
+                string skinTone = pirate.CharacterTraits.SkinTone.Name;
+                string hairStyle = pirate.CharacterTraits.HairStyle.Name;
+                string facialHair = pirate.CharacterTraits.FacialHair.Name;
+                string baseClothing = pirate.CharacterTraits.BaseClothing.Name;
+                string accessory = pirate.CharacterTraits.Accessory.Name;
+                string pirateOrigin = pirate.CharacterTraits.PirateOrigin.Name;
+                string shipType = pirate.CharacterTraits.ShipType.Name;
+                string shipSize = pirate.CharacterTraits.ShipSize.Name;
+                string pet = pirate.CharacterTraits.Pet.Name;
+                string crew = pirate.CharacterTraits.Crew.Name;
+                string trigger = pirate.CharacterTraits.Trigger.Name;
+                string debuff = pirate.CharacterTraits.Debuff.Name;
+                int agility = pirate.CharacterStats.Agility;
+                int charisma = pirate.CharacterStats.Charisma;
+                int health = pirate.CharacterStats.Health;
+                int intelligence = pirate.CharacterStats.Intelligence;
+                int strength = pirate.CharacterStats.Strength;
 
                 con.ConnOpen();
                 string sql = "INSERT INTO characterInformation VALUES " +
                     "(@characterName, @moonCycle, @form, @pirateCode, @mainWeapon, @secondarySkill, @natureSkill, " +
                     "@additionalSkill, @physicalTrademark, @skinTone, @hairStyle, @facialHair, @baseClothing, " +
-                    "@accessory, @pirateOrigin, @shipType, @shipSize, @pet, @crew, @trigger, @debuff)";
+                    "@accessory, @pirateOrigin, @shipType, @shipSize, @pet, @crew, @trigger, @debuff, " +
+                    "@agility, @charisma, @health, @intelligence, @strength)";
 
                 using (MySqlCommand cmd = new MySqlCommand(sql, con.GetConnection()))
                 {
@@ -173,6 +179,11 @@ namespace CharacterCreationSystem
                     cmd.Parameters.AddWithValue("@crew", crew);
                     cmd.Parameters.AddWithValue("@trigger", trigger);
                     cmd.Parameters.AddWithValue("@debuff", debuff);
+                    cmd.Parameters.AddWithValue("@agility", agility);
+                    cmd.Parameters.AddWithValue("@charisma", charisma);
+                    cmd.Parameters.AddWithValue("@health", health);
+                    cmd.Parameters.AddWithValue("@intelligence", intelligence);
+                    cmd.Parameters.AddWithValue("@strength", strength);
 
                     cmd.ExecuteNonQuery();
                 }

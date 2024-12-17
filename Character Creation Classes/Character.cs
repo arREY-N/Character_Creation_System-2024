@@ -12,7 +12,7 @@ namespace CharacterCreationSystem
             object[] informationArray = new object[
                 Dictionaries.CharacterInfoTitles.GetLength(0) +
                 Dictionaries.CharacterWeaponsTitles.GetLength(0) +
-                Dictionaries.CharacterTraitTitles.GetLength(0)
+                Dictionaries.CharacterTraitTitles.GetLength(0) + 5
             ];
 
             int infoIndex = 0;
@@ -63,7 +63,7 @@ namespace CharacterCreationSystem
             {
                 Utility.DisplayHeader("CONFIRM CHOICES");
                 CharacterDisplay.DisplayChoices(Dictionaries.dictionaries, informationArray);
-                Utility.Divider();
+                Utility.Divider('=');
                 Console.WriteLine("| 1  | Save");
                 Console.WriteLine("| 2  | Edit");
                 Console.WriteLine("| 3  | Main Menu");
@@ -76,10 +76,9 @@ namespace CharacterCreationSystem
                         case 1:
                             pirate = CreateCharacter(informationArray);
                             Database.AddToLocalDatabase(pirate);
-                            SQLConnection.AddToSQLDatabase(informationArray);
+                            SQLConnection.AddToSQLDatabase(pirate);
                             Utility.DisplayHeader("CHARACTER SUCCESSFULLY CREATED");
                             CharacterDisplay.ShowPirate(pirate);
-                            CharacterDisplay.ShowStats(pirate);
                             Utility.EnterToContinue();
                             edit = false;
                             break;
@@ -112,7 +111,7 @@ namespace CharacterCreationSystem
             {
                 try
                 {
-                    Utility.Divider();
+                    Utility.Divider('=');
                     int VAction = Utility.Validate(Utility.GetInput("Edit Trait"), 1);
                     Console.WriteLine();
                     if (VAction == 1)
