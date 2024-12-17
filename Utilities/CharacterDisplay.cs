@@ -20,25 +20,14 @@ namespace CharacterCreationSystem
                 }
             }
         }
-        // Displays the computed character stats
-        public static void ShowStats(Pirate pirate)
-        {
-            Console.WriteLine($"\n S  | Health             | {pirate.CharacterStats.Health}");
-            Console.WriteLine($" T  | Strength           | {pirate.CharacterStats.Strength}");
-            Console.WriteLine($" A  | Agility            | {pirate.CharacterStats.Agility}");
-            Console.WriteLine($" T  | Intelligence       | {pirate.CharacterStats.Intelligence}");
-            Console.WriteLine($" S  | Charisma           | {pirate.CharacterStats.Charisma}");
-            Utility.Divider();
-        }
-
         // Displays the information regarding the character
         public static void ShowPirate(Pirate pirate)
         {
-            Console.WriteLine($" C  | Name               | {pirate.CharacterInfo.Name}");
-            Console.WriteLine($" H  | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}");
-            Console.WriteLine($" A  | Form               | {pirate.CharacterInfo.Form.Name}");
-            Console.WriteLine($" R  | Pirate Code        | {pirate.CharacterInfo.PirateCode}");
-            Console.WriteLine($" A  | Main Weapon        | {pirate.CharacterWeapons.MainWeapon.Name}");
+            Utility.DisplayColumn($" C  | Name               | {pirate.CharacterInfo.Name}", $" S  | Health             | {pirate.CharacterStats.Health}");
+            Utility.DisplayColumn($" H  | Moon Cycles        | {pirate.CharacterInfo.MoonCycles.Name}", $" T  | Strength           | {pirate.CharacterStats.Strength}");
+            Utility.DisplayColumn($" A  | Form               | {pirate.CharacterInfo.Form.Name}", $" A  | Agility            | {pirate.CharacterStats.Agility}");
+            Utility.DisplayColumn($" R  | Pirate Code        | {pirate.CharacterInfo.PirateCode}", $" T  | Intelligence       | {pirate.CharacterStats.Intelligence}");
+            Utility.DisplayColumn($" A  | Main Weapon        | {pirate.CharacterWeapons.MainWeapon.Name}", $" S  | Charisma           | {pirate.CharacterStats.Charisma}");
             Console.WriteLine($" C  | Secondary Skill    | {pirate.CharacterWeapons.SecondarySkill.Name}");
             Console.WriteLine($" T  | Nature Skill       | {pirate.CharacterWeapons.NatureSkill.Name}");
             Console.WriteLine($" E  | Additional Skill   | {pirate.CharacterWeapons.AdditionalSkill.Name}");
@@ -54,7 +43,8 @@ namespace CharacterCreationSystem
             Console.WriteLine($"    | Pet                | {pirate.CharacterTraits.Pet.Name}");
             Console.WriteLine($"    | Crew               | {pirate.CharacterTraits.Crew.Name}");
             Console.WriteLine($"    | Trigger            | {pirate.CharacterTraits.Trigger.Name}");
-            Console.WriteLine($"    | Debuff             | {pirate.CharacterTraits.Debuff.Name}");
+            Console.WriteLine($"    | Debuff             | {pirate.CharacterTraits.Debuff.Name}\n");
+            Utility.Divider('=');
         }
         // Displays all the pirates from the local database
         public static void ViewDatabase()
@@ -80,8 +70,6 @@ namespace CharacterCreationSystem
             Utility.DisplayHeader("GET PIRATE");
             Pirate pirate;
             ViewDatabase();
-
-            // Utility.Divider();
 
             String VAction = Utility.GetInput("Enter Pirate Number (Enter 0 to go back to menu)");
             if (VAction != "0")

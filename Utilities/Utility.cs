@@ -61,6 +61,13 @@ namespace CharacterCreationSystem
             Console.ReadKey();
             Console.Clear();
         }
+        // Program buffer with custom message
+        public static void EnterToContinue(string message)
+        {
+            DisplayCenter(message);
+            Console.ReadKey();
+            Console.Clear();
+        }
         // Loading screen
         public static void LoadingScreen()
         {
@@ -98,9 +105,9 @@ namespace CharacterCreationSystem
             Console.WriteLine();
             Console.WriteLine();
             DisplayCenter("\u00A9 2024");
-            Divider();
+            Divider('=');
             DisplayCenter(section);
-            Divider();
+            Divider('=');
         }
         // Method to confirm action
         public static bool Confirm()
@@ -127,12 +134,27 @@ namespace CharacterCreationSystem
             }
             return false;
         }
-        public static void Divider()
+        public static void Divider(char div)
         {
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine(new string('=', Console.WindowWidth));
+            Console.WriteLine(new string(div, Console.WindowWidth));
             Console.WriteLine();
         }
+
+        public static void EraseLine()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.WriteLine();
+        }
+
+        public static void DisplayColumn(string col1, string col2)
+        {
+            int center = Console.WindowWidth / 2;
+            int padding = Math.Max(center - col1.Length, 0); 
+
+            Console.WriteLine($"{col1}{new string(' ', padding)}{col2}");
+        }
+
     }
 }
