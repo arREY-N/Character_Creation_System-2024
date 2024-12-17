@@ -259,8 +259,15 @@ namespace CharacterCreationSystem
 
                 if (Utility.Confirm())
                 {
+                    Utility.Divider('=');
+                    for (int i = 3; i > 0; i--)
+                    {
+                        Utility.DisplayCenter($"Closing in {i}");
+                        Thread.Sleep(1000);
+                        Utility.EraseLine();
+                    }
                     Utility.DisplayHeader("Sea ya later!");
-                    Console.ReadKey();
+                    Thread.Sleep(2000);
                     Environment.Exit(0);
                 } 
             }

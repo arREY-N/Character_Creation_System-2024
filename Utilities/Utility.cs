@@ -69,11 +69,11 @@ namespace CharacterCreationSystem
             Console.Clear();
         }
         // Loading screen
-        public static void LoadingScreen()
+        public static void LoadingScreen(string message)
         {
             Console.Clear();
             Console.SetCursorPosition(0, (Console.WindowHeight/2));
-            DisplayCenter("HAULING TREASURE ABOARD...");
+            DisplayCenter(message);
             Console.SetCursorPosition((Console.WindowWidth/2), (Console.WindowHeight / 2)+1);            
             Thread.Sleep(1000);
             Console.Clear();
@@ -98,7 +98,7 @@ namespace CharacterCreationSystem
         // Displays the game name and section title
         public static void DisplayHeader(string section)
         {
-            LoadingScreen();
+            LoadingScreen("LOADING TREASURE ABOARD...");
             Console.Clear();
             Console.WriteLine();
             DisplayCenter("SeaPAG: A Sea Pirate Adventure Game");
